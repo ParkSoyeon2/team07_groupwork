@@ -114,8 +114,7 @@ def main():
     ans_pos = hungarian_algorithm(cost_matrix.copy())
     ans, ans_matrix = ans_calculation(cost_matrix, ans_pos)
 
-    # Show the result
-    print(f"Linear Assignment problem result: {ans:.0f}\n{ans_matrix}")
+    print(f"Solution of assignment problem: {ans:.0f}\n{ans_matrix}")
 
 if __name__ == '__main__':
     main()
