@@ -14,16 +14,3 @@ if __name__ == '__main__':
     print_hi('PyCharm')
 
 # https://www.jetbrains.com/help/pycharm/에서 PyCharm 도움말 참조
-
-import random
-import numpy as np
-
-N = int(input())
-matrix = []
-for i in range(N):
-    m = []
-    for c in range(N):
-        m.append(random.randrange(100))
-    matrix.append(m)
-arr = np.array(matrix)
-print(arr) #역할1 박채현 데이터 생성
