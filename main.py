@@ -151,6 +151,5 @@ def main():
     df.to_csv("./output/result.csv", header=None, index=None)
 
 
-
 if __name__ == '__main__':
     main()
