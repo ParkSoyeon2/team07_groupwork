@@ -1,5 +1,9 @@
 import numpy as np
+import pandas as pd
+import os
 
+
+#0이 가장 적은 행 찾기, bool matrix로 변환하여 True 찾기
 def zero_min_row(zero_matrix, mark_zero):
     min_row = [99999, -1]
 
@@ -10,9 +14,9 @@ def zero_min_row(zero_matrix, mark_zero):
 
     #True가 가장 적은 행(0이 가장 적은 행)의 모든 요소를 False로 처리
     zero_index = np.where(zero_matrix[min_row[1]] == True)[0][0]
-    mark_zero.append((min_row[1],zero_index))
-    zero_matrix[min_row[1],:] = False
-    zero_matrix[:,zero_index] = False
+    mark_zero.append((min_row[1], zero_index))
+    zero_matrix[min_row[1], :] = False
+    zero_matrix[:, zero_index] = False
 
 
 def mark_matrix(matrix):
@@ -40,7 +44,7 @@ def mark_matrix(matrix):
     while check_switch:
         check_switch = False
         for i in range(len(non_marked_row)):
-            row_array = zero_bool_matrix[non_marked_row[i],:]
+            row_array = zero_bool_matrix[non_marked_row[i], :]
             for j in range(row_array.shape[0]):
                 #non_markes_row의 요소 중에 표시되지 않은 0(표시되지 않은 True)이 있는지 확인
                 if row_array[j] == True and j not in marked_cols:
@@ -82,7 +86,7 @@ def adjust_matrix(matrix, cover_rows, cover_cols):
     #4-3
     for row in range(len(cover_rows)):
         for col in range(len(cover_cols)):
-            cur_matrix[cover_rows[row], cover_cols[col]] = cur_matrix[cover_rows[row],cover_cols[col]] + min_num
+            cur_matrix[cover_rows[row], cover_cols[col]] = cur_matrix[cover_rows[row], cover_cols[col]] + min_num
 
     return cur_matrix
 
@@ -95,7 +99,7 @@ def hungarian_algorithm(matrix):
     for i in range(dim):
         cur_matrix[i] = cur_matrix[i] - np.min(cur_matrix[i])
     for j in range(dim):
-        cur_matrix[:,j] = cur_matrix[:,j] - np.min(cur_matrix[:,j])
+        cur_matrix[:, j] = cur_matrix[:, j] - np.min(cur_matrix[:, j])
     zero_cnt = 0
     while zero_cnt < dim:
         #marked_rows와 marked_cols의 길이 합이 n과 같다면 성공적으로 해를 찾은 것
@@ -112,24 +116,44 @@ def ans_calculation(matrix, pos):
     total = 0
     ans_matrix = np.zeros((matrix.shape[0], matrix.shape[1]))
     for i in range(len(pos)):
-        total += matrix[pos[i][0],pos[i][1]]
+        total += matrix[pos[i][0], pos[i][1]]
         ans_matrix[pos[i][0], pos[i][1]] = matrix[pos[i][0], pos[i][1]]
     return total, ans_matrix
+
+
+def makedirs(path):
+    try:
+        os.makedirs(path)
+    except OSError:
+        if not os.path.isdir(path):
+            raise
 
 
 def main():
     path_write = 'result.txt'
 
     n = int(input("Enter an integer n for generating nxn data: "))
+    import random
 
-    cost_matrix = np.random.randint(0,100,size=(n,n))
-    print(cost_matrix)
+    N = int(input())
+    matrix = []
+    for i in range(N):
+        m = []
+        for c in range(N):
+            m.append(random.randrange(100))
+        matrix.append(m)
+    arr = np.array(matrix)
+    print(arr)  # 역할1 박채현 데이터 생성
 
-    ans_pos = hungarian_algorithm(cost_matrix.copy())
-    ans, ans_matrix = ans_calculation(cost_matrix, ans_pos)
+    ans_pos = hungarian_algorithm(arr.copy())
+    ans, ans_matrix = ans_calculation(arr, ans_pos)
 
     # 솔루션 출력
     print(f"Linear Assignment problem result: {ans:.0f}\n{ans_matrix}")
+    makedirs('./output')
+    df = pd.DataFrame(ans_matrix)
+    df.to_csv("./output/result.csv", header=None, index=None)
+
 
 
 if __name__ == '__main__':
