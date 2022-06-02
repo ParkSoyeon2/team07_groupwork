@@ -4,7 +4,6 @@ import os
 import random
 
 
-#0이 가장 적은 행 찾기, bool matrix로 변환하여 True 찾기
 def zero_min_row(zero_matrix, mark_zero):
     min_row = [99999, -1]
 
@@ -70,7 +69,7 @@ def adjust_matrix(matrix, cover_rows, cover_cols):
     cur_matrix = matrix
     non_zero_element = []
 
-    #4-1
+    #marked_rows에 없고 marked_cols에도 없는 요소 중 최소 비용 찾기
     for row in range(len(cur_matrix)):
         if row not in cover_rows:
             for i in range(len(cur_matrix[row])):
@@ -78,13 +77,14 @@ def adjust_matrix(matrix, cover_rows, cover_cols):
                     non_zero_element.append(cur_matrix[row][i])
     min_num = min(non_zero_element)
 
-    #4-2
+    #marked_rows와 marked_cols이 아닌 행과 열에서 위에서 찾은 최소 비용 감산하기
     for row in range(len(cur_matrix)):
         if row not in cover_rows:
             for i in range(len(cur_matrix[row])):
                 if i not in cover_cols:
                     cur_matrix[row,i] = cur_matrix[row,i] - min_num
-    #4-3
+
+    #marked_rows에 있고 marked_cols에도 있는 요소에 위에서 찾은 최소 비용 가산하기
     for row in range(len(cover_rows)):
         for col in range(len(cover_cols)):
             cur_matrix[cover_rows[row], cover_cols[col]] = cur_matrix[cover_rows[row], cover_cols[col]] + min_num
