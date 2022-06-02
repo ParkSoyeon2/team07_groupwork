@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import os
+import random
 
 
 #0이 가장 적은 행 찾기, bool matrix로 변환하여 True 찾기
@@ -130,12 +131,7 @@ def makedirs(path):
 
 
 def main():
-    path_write = 'result.txt'
-
-    n = int(input("Enter an integer n for generating nxn data: "))
-    import random
-
-    N = int(input())
+    N = int(input("Enter an integer n for generating nxn data: "))
     matrix = []
     for i in range(N):
         m = []
