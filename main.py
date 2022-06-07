@@ -2,7 +2,8 @@ import numpy as np
 import pandas as pd
 import os
 import random
-
+#logging 도구 import 하기
+import logging
 
 def zero_min_row(zero_matrix, mark_zero):
     min_row = [99999, -1]
@@ -131,8 +132,20 @@ def makedirs(path):
 
 
 def main():
+
+    # logger 설정하기
+    logger = logging.getLogger("main")
+    stream_hander = logging.StreamHandler()
+    logger.addHandler(stream_hander)
+    # logger level 'INFO' 로 설정하기
+    logger.setLevel(logging.INFO)
+    # logger 출력되는 형식 설정하기
+    formatter = logging.Formatter('[%(asctime)s][%(levelname)s|%(filename)s:%(lineno)s] >>> %(message)s')
+
     N = int(input("Enter an integer n for generating nxn data: "))
     matrix = []
+
+    logging.info('making data')
     for i in range(N):
         m = []
         for c in range(N):
@@ -144,6 +157,7 @@ def main():
     ans_pos = hungarian_algorithm(arr.copy())
     ans, ans_matrix = ans_calculation(arr, ans_pos)
 
+    logging.info('print solution')
     # 솔루션 출력
     print(f"Linear Assignment problem result: {ans:.0f}\n{ans_matrix}")
     makedirs('./output')
