@@ -145,7 +145,9 @@ def main():
     N = int(input("Enter an integer n for generating nxn data: "))
     matrix = []
 
-    logging.info('making data')
+    logging.info('')
+    logger.info('making data')
+
     for i in range(N):
         m = []
         for c in range(N):
@@ -157,7 +159,9 @@ def main():
     ans_pos = hungarian_algorithm(arr.copy())
     ans, ans_matrix = ans_calculation(arr, ans_pos)
 
-    logging.info('print solution')
+    logging.info('')
+    logger.info('print solution')
+
     # 솔루션 출력
     print(f"Linear Assignment problem result: {ans:.0f}\n{ans_matrix}")
     makedirs('./output')
